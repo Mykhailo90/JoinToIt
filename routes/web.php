@@ -22,3 +22,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/admin/companies', 'CompanyController@index');
 Route::get('/admin/companies/create', 'CompanyController@create');
 Route::post('/admin/companies', 'CompanyController@store');
+Route::get('/admin/companies/{id}', 'CompanyController@show');
+Route::get('admin/companies/{id}/update', 'CompanyController@edit');
+Route::post('/admin/companies/{id}/update', 'CompanyController@update');
+Route::get('/admin/companies/{id}/delete', 'CompanyController@destroy');
+
+
+Route::get('/admin/employees', 'EmployeeController@index');
+Route::get('/admin/employees/{id}', 'EmployeeController@show');
+Route::get('/admin/employees/{id}/update', 'EmployeeController@edit');

@@ -2,15 +2,15 @@
 
 namespace App;
 
+use App\Http\Requests\CompanyCreateRequest;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Company extends Model
 {
     protected $guarded = [];
 
     protected $table = 'companies';
-
-//    protected $with = ['creator', 'channel'];
 
     protected static function boot()
     {
@@ -38,8 +38,25 @@ class Company extends Model
         $this->employees()->create($employee);
     }
 
-//    public function scopeFilter($query, $filters)
-//    {
-//        return $filters->apply($query);
-//    }
+    public function updateInfo(CompanyCreateRequest $request)
+    {
+        $this->name = $request->name;
+        $this->email = ($request->email) ? $request->email : $this->email;
+        $this->website = ($request->website) ? $request->website : $this->website;
+
+        $path = null;
+        if ($request->hasFile('logo')) {
+            $path = $request->logo->store('public');
+        }
+        $fileName = ($path) ? basename($path) : NULL;
+
+        if ($fileName)
+        {
+            Storage::delete('public/'.$this->logo);
+            $this->logo = $fileName;
+        }
+
+        $this->save();
+    }
+
 }

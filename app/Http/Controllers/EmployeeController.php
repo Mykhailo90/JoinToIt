@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Employee;
 use App\Http\Requests\CompanyCreateRequest;
+use App\Http\Requests\EmployeeCreateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class CompanyController extends Controller
+class EmployeeController extends Controller
 {
     public function __construct()
     {
@@ -22,9 +23,11 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
+        $employees = Employee::paginate(10);
 
-        return view('company.index', compact('companies'));
+        return view('employee.index', [
+            'employees' => $employees
+        ]);
     }
 
     /**
@@ -70,11 +73,10 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $company = Company::findOrFail($id);
+        $employee = Employee::findOrFail($id);
 
-        return view('company.show', [
-            'company' => $company,
-            'employees' => $company->employees()->paginate(10)
+        return view('employee.show', [
+            'employee' => $employee,
         ]);
     }
 
@@ -82,15 +84,16 @@ class CompanyController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int $id
-     * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit($id, Company $company)
+    public function edit($id)
     {
-        $company = $company->findOrFail($id);
+        $companies = Company::all();
+        $employee = Employee::findOrFail($id);
 
         return view('company.update', [
-            'company' => $company,
+            'companies' => $companies,
+            'employee' => $employee
         ]);
     }
 
@@ -101,12 +104,12 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(CompanyCreateRequest $request, Company $company)
+    public function update(EmployeeCreateRequest $request, Employee $employee)
     {
-        $company = $company->findOrFail($request->id);
-        $company->updateInfo($request);
+        $employee = $employee->findOrFail($request->id);
+        $employee->updateInfo($request);
 
-        return redirect($company->path());
+        return redirect('/admin/employees/'.$employee->id);
     }
 
     /**
