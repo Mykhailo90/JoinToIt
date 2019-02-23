@@ -1,0 +1,113 @@
+@extends('adminlte::page')
+
+@section('title', 'Mini-CRM')
+<style>
+    h1, p{
+        text-align: center;
+        font-weight: bolder;
+    }
+    p{
+        color: #00a157;
+        font-size: 1.5vw;
+    }
+
+    .card{
+        margin-bottom: 20px;
+    }
+    body{
+        padding-bottom: 100px;
+    }
+    .level{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .flex{
+        flex: 1;
+    }
+</style>
+@section('content_header')
+    <h1>Create Company</h1>
+@stop
+
+@section('content')
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    {{--<div class="card-header">Create a New Thread</div>--}}
+
+                    <div class="card-body">
+                        <form method="POST" action="/admin/companies" enctype="multipart/form-data">
+                            {{ csrf_field() }}
+
+                            <div class="form-group">
+                                <label for="name">Company name:</label>
+                                <input type="text" class="form-control" name="name", id="name" placeholder="Company name" value="{{ old('name') }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" class="form-control" name="email", id="email" placeholder="Email" value="{{ old('email') }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="website">Website:</label>
+                                <input type="text" class="form-control" name="website", id="website" placeholder="http://test.site.com" value="{{ old('website') }}">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="logo">Logo:</label>
+                                <input type="file" class="form-control" name="logo", id="logo" placeholder="logo" value="{{ old('logo') }}" >
+                                <span>*Image must be more then 100 x 100 px!</span>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Publish</button>
+                        </form>
+                    </div>
+                </div>
+                @if(count($errors))
+                    <ul class="alert alert-danger">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+            </div>
+        </div>
+
+    </div>
+
+    {{--<script>--}}
+        {{--function validateFile()--}}
+        {{--{--}}
+            {{--var allowedExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];--}}
+            {{--var fileExtension = document.getElementById('logo').value.split('.').pop().toLowerCase();--}}
+            {{--var isValidFile = false;--}}
+
+            {{--for(var index in allowedExtension) {--}}
+
+                {{--if(fileExtension === allowedExtension[index]) {--}}
+                    {{--isValidFile = true;--}}
+                    {{--break;--}}
+                {{--}--}}
+            {{--}--}}
+
+            {{--if(!isValidFile) {--}}
+                {{--alert('Allowed Extensions are : *.' + allowedExtension.join(', *.'));--}}
+            {{--}--}}
+
+            {{--return isValidFile;--}}
+        {{--}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               --}}
+
+        {{--$(document).ready(function() {--}}
+            {{--$("logo").load(function() {--}}
+                {{--alert($(this).height());--}}
+                {{--alert($(this).width());--}}
+            {{--});--}}
+        {{--});--}}
+
+    {{--</script>--}}
+
+@stop
