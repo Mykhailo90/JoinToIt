@@ -34,7 +34,7 @@
 @stop
 
 @section('content')
-
+    @if($companiesCount > 0)
     <div class="row col-md-6 col-md-offset-3">
         <a href="/admin/employees/create" class="btn btn-success btn-lg btn-block">Add Employee</a>
     </div>
@@ -79,8 +79,9 @@
             </div>
         </div>
     @endif
-
-
-
-
+    @else
+        <div class="row alert alert-warning" id="alert" role="alert">
+            If you want add employee - firstly, add company!
+        </div>
+    @endif
 @stop

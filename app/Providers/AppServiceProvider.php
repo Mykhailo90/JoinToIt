@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Company;
+use App\Employee;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \View::composer('*', function($view) {
+            $companiesCount = Company::all()->count();
+            $employeesCount = Employee::all()->count();
+
+            $view->with([
+                "companiesCount" => $companiesCount,
+                "employeesCount" => $employeesCount
+            ]);
+        });
     }
 
     /**

@@ -27,7 +27,7 @@
     }
 </style>
 @section('content_header')
-    <h1>Create Company</h1>
+    <h1>Create Employee</h1>
 @stop
 
 @section('content')
@@ -37,12 +37,17 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body">
-                        <form method="POST" action="/admin/companies" enctype="multipart/form-data">
+                        <form method="POST" action="/admin/employees">
                             {{ csrf_field() }}
 
                             <div class="form-group">
-                                <label for="name">Company name:</label>
-                                <input type="text" class="form-control" name="name", id="name" placeholder="Company name" value="{{ old('name') }}" required>
+                                <label for="name">First name:</label>
+                                <input type="text" class="form-control" name="first_name", id="first_name" placeholder="First name" value="{{ old('first_name') }}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="name">Last name:</label>
+                                <input type="text" class="form-control" name="last_name", id="last_name" placeholder="Last name" value="{{ old('last_name') }}" required>
                             </div>
 
                             <div class="form-group">
@@ -51,17 +56,23 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="website">Website:</label>
-                                <input type="text" class="form-control" name="website", id="website" placeholder="http://test.site.com" value="{{ old('website') }}">
+                                <label for="phone">Phone:</label>
+                                <input type="phone" class="form-control" name="phone", id="phone" placeholder="Phone" value="{{ old('phone') }}">
                             </div>
 
                             <div class="form-group">
-                                <label for="logo">Logo:</label>
-                                <input type="file" class="form-control" name="logo", id="logo" placeholder="logo" value="{{ old('logo') }}" >
-                                <span>*Image must be more then 100 x 100 px!</span>
+                                <label for="company">Choose a Company:</label>
+                                <select name="company_id", id='company_id' class="form-control" required>
+                                    <option value="">Choose company...</option>
+                                    @foreach ($companies as $company)
+                                        <option value="{{ $company->id }}" {{ old('company_id') == $company->id ? 'selected' : '' }}>
+                                            {{$company->name}}
+                                        </option>
+                                    @endforeach
+                                </select>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Publish</button>
+                            <button type="submit" class="btn btn-primary">Save</button>
                         </form>
                     </div>
                 </div>

@@ -6,6 +6,7 @@ use App\Company;
 use App\Employee;
 use App\Http\Requests\CompanyCreateRequest;
 use App\Http\Requests\EmployeeCreateRequest;
+use App\Http\Requests\EmployeeUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -37,32 +38,29 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('company.create');
+        $companies = Company::all();
+        return view('employee.create', [
+            'companies' => $companies
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  EmployeeCreateRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CompanyCreateRequest $request)
+    public function store(EmployeeCreateRequest $request)
     {
-        $path = null;
-        if ($request->hasFile('logo')) {
-            $path = $request->logo->store('public');
-        }
-
-        $fileName = ($path) ? basename($path) : NULL;
-
-        $company = Company::create([
-            'name' => $request->name,
+        $employee = Employee::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
-            'website' => $request->website,
-            'logo' => $fileName
+            'phone' => $request->phone,
+            'company_id' => $request->company_id,
         ]);
 
-        return redirect($company->path());
+        return redirect('/admin/employees/'.$employee->id);
     }
 
     /**
@@ -91,7 +89,7 @@ class EmployeeController extends Controller
         $companies = Company::all();
         $employee = Employee::findOrFail($id);
 
-        return view('company.update', [
+        return view('employee.update', [
             'companies' => $companies,
             'employee' => $employee
         ]);
@@ -100,11 +98,11 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Company  $company
+     * @param  EmployeeUpdateRequest  $request
+     * @param  Employee $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(EmployeeCreateRequest $request, Employee $employee)
+    public function update(EmployeeUpdateRequest $request, Employee $employee)
     {
         $employee = $employee->findOrFail($request->id);
         $employee->updateInfo($request);
@@ -116,22 +114,14 @@ class EmployeeController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @param  \App\Company  $company
+     * @param  Employee $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id, Company $company)
+    public function destroy($id, Employee $employee)
     {
-        $company = $company->findOrFail($id);
-        Storage::delete('public/'.$company->logo);
-        $employees = $company->employees;
+        $employee = $employee->findOrFail($id);
+        $employee->delete();
 
-        foreach ($employees as $item)
-        {
-            $item->delete();
-        }
-
-        $company->delete();
-
-        return redirect('/admin/companies');
+        return redirect('/admin/employees');
     }
 }

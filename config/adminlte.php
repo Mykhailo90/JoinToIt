@@ -113,8 +113,6 @@ return [
             'text'        => 'Companies',
             'url'         => 'admin/companies',
             'icon'        => 'file',
-            'label'       => 'all',
-            'label_color' => 'success',
         ],
         [
             'text'        => 'Employees',

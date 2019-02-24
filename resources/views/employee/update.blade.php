@@ -27,7 +27,7 @@
     }
 </style>
 @section('content_header')
-<h1>Update Company</h1>
+<h1>Update Employee</h1>
 @stop
 
 @section('content')
@@ -37,28 +37,39 @@
         <div class="col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <form method="POST" action="/admin/companies/{{ $company->id }}/update" enctype="multipart/form-data">
+                    <form method="POST" action="/admin/employees/{{ $employee->id }}/update">
                         {{ csrf_field() }}
 
                         <div class="form-group">
-                            <label for="name">Company name:</label>
-                            <input type="text" class="form-control" name="name", id="name" placeholder="Company name" value="{{ $company->name }}" required>
+                            <label for="name">First name:</label>
+                            <input type="text" class="form-control" name="first_name", id="first_name" placeholder="First name" value="{{ $employee->first_name }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="name">Last name:</label>
+                            <input type="text" class="form-control" name="last_name", id="last_name" placeholder="Last name" value="{{ $employee->last_name }}">
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="email" class="form-control" name="email", id="email" placeholder="Email" value="{{ $company->email }}">
+                            <input type="email" class="form-control" name="email", id="email" placeholder="Email" value="{{ $employee->email }}">
                         </div>
 
                         <div class="form-group">
-                            <label for="website">Website:</label>
-                            <input type="text" class="form-control" name="website", id="website" placeholder="http://test.site.com" value="{{ $company->website }}">
+                            <label for="phone">Phone:</label>
+                            <input type="phone" class="form-control" name="phone", id="phone" placeholder="Phone" value="{{ $employee->phone }}">
                         </div>
 
                         <div class="form-group">
-                            <label for="logo">Logo:</label>
-                            <input type="file" class="form-control" name="logo", id="logo" placeholder="logo" value="{{ $company->logo }}" >
-                            <span>*Image must be more then 100 x 100 px!</span>
+                            <label for="company">Choose a Company:</label>
+                            <select name="company_id", id='company_id' class="form-control">
+                                <option value="">Choose company...</option>
+                                @foreach ($companies as $company)
+                                    <option value="{{ $company->id }}" {{ old('company_id') == $company->id ? 'selected' : '' }}>
+                                        {{$company->name}}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-primary">Save</button>
@@ -66,11 +77,11 @@
                 </div>
             </div>
             @if(count($errors))
-            <ul class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+                <ul class="alert alert-danger">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             @endif
         </div>
     </div>
