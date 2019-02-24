@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use App\Employee;
 use App\Http\Requests\CompanyCreateRequest;
-use Illuminate\Http\Request;
+use App\Notifications\CreateCompanyNotification;
 use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
@@ -40,7 +39,7 @@ class CompanyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  CompanyCreateRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CompanyCreateRequest $request)
@@ -58,6 +57,9 @@ class CompanyController extends Controller
             'website' => $request->website,
             'logo' => $fileName
         ]);
+
+        if($company)
+            $company->notify(new CreateCompanyNotification($company));
 
         return redirect($company->path());
     }

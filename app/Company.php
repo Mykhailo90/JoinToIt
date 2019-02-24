@@ -4,10 +4,13 @@ namespace App;
 
 use App\Http\Requests\CompanyCreateRequest;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 
 class Company extends Model
 {
+    use Notifiable;
+
     protected $guarded = [];
 
     protected $table = 'companies';
