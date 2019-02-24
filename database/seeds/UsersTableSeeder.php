@@ -15,6 +15,12 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('users')->truncate();
 
-        factory(User::class)->create();
+        create('App\User', [
+            'name' => 'admin',
+            'email' => 'admin@admin.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+        ]);
     }
 }
